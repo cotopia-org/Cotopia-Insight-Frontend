@@ -31,8 +31,10 @@ function Jobs() {
           <p className="text-bold18 text-grayscale-text-caption mb-3">{in_progress}</p>
           <InProgress />
         </div>
-        <div className="flex-1 overflow-scroll">
-          <p className="text-bold18 text-grayscale-text-caption mb-3">{to_do}</p>
+        <div className="relative flex-1 overflow-scroll">
+          <p className="sticky top-0 text-bold18 text-grayscale-text-caption pb-3 bg-grayscale-surface-subtle">
+            {to_do}
+          </p>
           {data.map((item, index) => (
             <div
               className={classNames({
