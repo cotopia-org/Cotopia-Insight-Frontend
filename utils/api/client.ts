@@ -12,7 +12,11 @@ export const client = axios.create({
 client.interceptors.request.use(
   config => {
     const tempConfig = config
-    tempConfig.headers.Authorization = useTokenStore.getState().token
+    if (tempConfig.baseURL === TIME_MASTER_BASE_URL) {
+      tempConfig.headers.Authorization = useTokenStore.getState().timeApiToken
+    } else {
+      tempConfig.headers.Authorization = `Bearer ${useTokenStore.getState().jobsApiToken}`
+    }
     return tempConfig
   },
   error => {

@@ -7,18 +7,20 @@ import { DASHBOARD_ROUTE } from '@routes'
 
 function SuspenseContent() {
   const searchParams = useSearchParams()
-  const token = searchParams.get('t') as string
-  const { setToken } = useTokenStore()
+  const timeApiToken = searchParams.get('t') as string
+  const jobsApiToken = searchParams.get('jmt') as string
+  const { setTimeApiToken, setJobsApiToken } = useTokenStore()
   const router = useRouter()
 
   useEffect(() => {
-    if (token) {
-      setToken(token)
+    if (timeApiToken && jobsApiToken) {
+      setTimeApiToken(timeApiToken)
+      setJobsApiToken(jobsApiToken)
       router.push(DASHBOARD_ROUTE)
     }
   }, [])
 
-  return <div>{token ? 'Logging in ...' : 'Your token has expired'}</div>
+  return <div>{timeApiToken && jobsApiToken ? 'Logging in ...' : 'Your token has expired'}</div>
 }
 
 function Login() {

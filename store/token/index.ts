@@ -4,15 +4,19 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface TokenStore {
-  token: string
-  setToken: (t: string) => void
+  timeApiToken: string
+  setTimeApiToken: (t: string) => void
+  jobsApiToken: string
+  setJobsApiToken: (t: string) => void
 }
 
 const useTokenStore = create<TokenStore>()(
   persist(
     set => ({
-      token: '',
-      setToken: t => set({ token: t }),
+      timeApiToken: '',
+      jobsApiToken: '',
+      setTimeApiToken: t => set({ timeApiToken: t }),
+      setJobsApiToken: t => set({ jobsApiToken: t }),
     }),
     {
       name: 'tokenStore',

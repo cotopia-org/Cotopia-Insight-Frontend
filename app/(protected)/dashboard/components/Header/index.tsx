@@ -5,8 +5,15 @@ import {
   SearchNormalLinearIcon,
   TimerLinearIcon,
 } from '@assets'
+import { JOB_MANAGER_BASE_URL } from '@utils/api/const'
+import useApi from '@utils/api/useApi'
 
 function Header() {
+  useApi({
+    baseURL: JOB_MANAGER_BASE_URL,
+    url: '/jobs',
+  })
+
   return (
     <div className="h-[61px] flex justify-between items-center bg-grayscale-surface-subtle mr-6 pl-8 pr-6 rounded-[20px]">
       <div className="flex items-center gap-4">
