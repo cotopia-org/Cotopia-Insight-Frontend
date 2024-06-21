@@ -14,6 +14,7 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
       name,
       width,
       fullWidth,
+      variant = 'outlined',
       type,
       label,
       value,
@@ -28,17 +29,20 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
       onBlur,
       onFocus,
       autoFocus,
+      rows,
     },
     ref,
   ) => {
     return (
       <ThemeProvider>
         <div className={className}>
-          <InputLabel className="!text-medium20 !text-grayscale-text-paragraph mb-2">
+          <InputLabel className="!text-medium16 !text-grayscale-text-subtitle mb-2">
             {label}
           </InputLabel>
           <TextField
-            variant="filled"
+            multiline={!!rows}
+            rows={rows}
+            variant={variant}
             id={id}
             name={name}
             sx={{

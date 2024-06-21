@@ -48,6 +48,7 @@ function Income({ data, loading }: IncomeType) {
               <KInput
                 autoFocus
                 fullWidth
+                variant="filled"
                 type="number"
                 label={insert_income}
                 value={String(myIncome)}

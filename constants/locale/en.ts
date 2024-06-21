@@ -32,6 +32,7 @@ const staticText = {
     my_jobs: 'My Jobs',
     in_progress: 'In progress',
     to_do: 'To Do',
+    done: 'Done',
   },
 }
 

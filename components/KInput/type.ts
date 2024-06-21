@@ -7,6 +7,7 @@ export default interface KInputProps {
   name?: string
   width?: number
   fullWidth?: boolean
+  variant?: 'outlined' | 'filled'
   type?: HTMLInputTypeAttribute
   label: string
   value?: string
@@ -22,4 +23,5 @@ export default interface KInputProps {
   onBlur?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>
   onFocus?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined
   autoFocus?: boolean
+  rows?: number
 }

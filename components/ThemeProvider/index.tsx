@@ -414,6 +414,17 @@ const theme = createTheme({
         },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          padding: 12,
+          '& .MuiOutlinedInput-input': {
+            padding: '0px !important',
+          },
+        },
+      },
+    },
   },
 })
 

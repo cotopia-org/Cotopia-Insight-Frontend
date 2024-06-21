@@ -17,6 +17,7 @@ export { default as CalendarLinearIcon } from './icons/linear/calendar.svg'
 export { default as MoreLinearIcon } from './icons/linear/more.svg'
 export { default as AddLinearIcon } from './icons/linear/add.svg'
 export { default as ClockLinearIcon } from './icons/linear/clock.svg'
+export { default as CloseLinearIcon } from './icons/linear/close.svg'
 
 // Bold icons
 export { default as CategoryBoldIcon } from './icons/bold/category.svg'
@@ -26,6 +27,9 @@ export { default as ChartBoldIcon } from './icons/bold/chart.svg'
 export { default as DocumentBoldIcon } from './icons/bold/document.svg'
 export { default as TimeTrackerBoldIcon } from './icons/bold/timeTracker.svg'
 export { default as Setting2BoldIcon } from './icons/bold/setting2.svg'
+export { default as PlayCircleBoldIcon } from './icons/bold/playCircle.svg'
+export { default as TagBoldIcon } from './icons/bold/tag.svg'
+export { default as ProfileAddBoldIcon } from './icons/bold/profileAdd.svg'
 
 // Bulk icons
 export { default as DollarSquareBulkIcon } from './icons/bulk/dollarSquare.svg'
@@ -34,6 +38,7 @@ export { default as BriefcaseBulkIcon } from './icons/bulk/briefcase.svg'
 export { default as PlayCircleBulkIcon } from './icons/bulk/playCircle.svg'
 export { default as PauseCircleBulkIcon } from './icons/bulk/pauseCircle.svg'
 export { default as TickCircleBulkIcon } from './icons/bulk/tickCircle.svg'
+export { default as RefreshLeftSquareBulkIcon } from './icons/bulk/refreshLeftSquare.svg'
 
 // Illustrations
 export { default as InsightSvg } from './illustrations/insight.svg'

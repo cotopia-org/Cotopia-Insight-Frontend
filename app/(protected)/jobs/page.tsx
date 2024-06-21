@@ -1,16 +1,19 @@
 'use client'
 
 import classNames from 'classnames'
+import { useState } from 'react'
 import { AddLinearIcon, NotificationBingLinearIcon, SearchNormalLinearIcon } from '@assets'
 import { KButton } from '@components'
 import staticText from '@locale/en'
-import { InProgress, ToDo } from './components'
+import { Done, InProgress, JobDialog, ToDo } from './components'
 
-const { my_jobs, in_progress, to_do } = staticText.jobs
+const { my_jobs, in_progress, to_do, done } = staticText.jobs
 
 const data = [1, 2, 3, 4, 5, 6, 7, 8]
 
 function Jobs() {
+  const [jobDialogOpen, setJobDialogOpen] = useState(false)
+
   return (
     <div className="flex flex-col w-full px-5 pt-3 mr-6 mb-6 bg-grayscale-surface-subtle rounded-[20px]">
       <div className="flex justify-between items-center pt-1 px-1 mb-4">
@@ -23,6 +26,7 @@ function Jobs() {
             variant="outlined"
             width={102}
             rightIcon={className => <AddLinearIcon className={className} />}
+            onClick={() => setJobDialogOpen(true)}
           />
         </div>
       </div>
@@ -45,11 +49,12 @@ function Jobs() {
             </div>
           ))}
         </div>
-        {/* <div>
-          <p className="text-bold18 text-grayscale-text-caption mb-3">{in_progress}</p>
-          <InProgress />
-        </div> */}
+        <div>
+          <p className="text-bold18 text-grayscale-text-caption mb-3">{done}</p>
+          <Done />
+        </div>
       </div>
+      <JobDialog jobDialogOpen={jobDialogOpen} setJobDialogOpen={setJobDialogOpen} />
     </div>
   )
 }
