@@ -103,7 +103,7 @@ function Jobs() {
         <div>
           <p className="text-bold18 text-grayscale-text-caption mb-3">{done}</p>
           {doneLoading || doneJobs === undefined ? (
-            <KSkeleton height={99} />
+            <KSkeleton height={74} />
           ) : (
             <Done data={doneJobs} />
           )}

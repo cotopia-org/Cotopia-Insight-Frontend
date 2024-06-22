@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { KButton, KDialog, KInput } from '@components'
+import { MouseEventHandler, useState } from 'react'
+import { KButton, KDialog, KInput, KPopover, KRadio } from '@components'
 import {
   CalendarLinearIcon,
   CloseLinearIcon,
@@ -20,6 +20,8 @@ const {
   description,
   status,
   to_do,
+  in_progress,
+  done,
   due_date,
   click_to_add,
   tags,
@@ -31,6 +33,11 @@ const {
 function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
   const [jobTitle, setJobTitle] = useState('')
   const [jobDescription, setJobDescription] = useState('')
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
+
+  const handleActionClick: MouseEventHandler<HTMLDivElement> = e => {
+    setAnchorEl(e.currentTarget)
+  }
 
   return (
     <KDialog open={jobDialogOpen} handleClose={() => setJobDialogOpen(false)}>
@@ -44,6 +51,7 @@ function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
           <KButton
             text={start_job}
             rightIcon={className => <PlayCircleBoldIcon className={className} />}
+            disabled={!jobTitle || !jobDescription}
             onClick={() => setJobDialogOpen(false)}
           />
           <CloseLinearIcon
@@ -73,9 +81,20 @@ function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
         <div className="w-2/5 px-5 py-6">
           <div className="border-b border-grayscale-border-disabled pb-5">
             <p className="text-medium16 text-grayscale-text-subtitle mb-2">{status}</p>
-            <div className="w-max bg-primary-surface-dark rounded-lg px-3 py-1 text-medium16 text-grayscale-text-negative">
+            <div
+              role="presentation"
+              className="w-max bg-primary-surface-dark rounded-lg px-3 py-1 text-medium16 text-grayscale-text-negative cursor-pointer"
+              onClick={handleActionClick}
+            >
               {to_do}
             </div>
+            <KPopover anchorEl={anchorEl} setAnchorEl={setAnchorEl}>
+              <div className="px-4 py-3 flex flex-col gap-4">
+                <KRadio label={to_do} checked />
+                <KRadio label={in_progress} />
+                <KRadio label={done} />
+              </div>
+            </KPopover>
           </div>
           <div className="flex justify-between items-center border-b border-grayscale-border-disabled py-5">
             <p className="text-medium16 text-grayscale-text-subtitle mb-2">{due_date}</p>
