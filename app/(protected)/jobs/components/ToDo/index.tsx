@@ -1,15 +1,23 @@
 'use client'
 
 import { MouseEventHandler, useState } from 'react'
-import { MoreLinearIcon, PlayCircleBulkIcon } from '@assets'
+import {
+  CopyLinearIcon,
+  MoreLinearIcon,
+  PlayCircleBulkIcon,
+  TickCircleLinearIcon,
+  TrashLinearIcon,
+} from '@assets'
 import { KPopover } from '@components'
 import staticText from '@locale/en'
+import { dateConvertor } from '@utils'
 import DateChip from '../DateChip'
 import TimeChip from '../TimeChip'
+import TodoProps from './type'
 
 const { duplicate, mark_done, remove } = staticText.jobs
 
-function ToDo() {
+function ToDo({ data }: TodoProps) {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   const handleActionClick: MouseEventHandler<HTMLButtonElement> = e => {
@@ -20,14 +28,11 @@ function ToDo() {
     <div className="flex gap-3 p-3 rounded-2xl hover:bg-grayscale-surface">
       <PlayCircleBulkIcon className="w-8 h-8 text-primary-surface" />
       <div className="flex-1">
-        <p className="text-medium18 text-grayscale-text-paragraphs mb-1">
-          This is another job title
-        </p>
-        <p className="text-medium14 text-grayscale-text-caption mb-2">
-          Sometimes Your Jobs need a Description for better understanding
-        </p>
+        <p className="text-medium18 text-grayscale-text-paragraphs mb-1">{data.title}</p>
+        <p className="text-medium14 text-grayscale-text-caption mb-2">{data.description}</p>
         <div className="flex gap-3">
           <DateChip data="2 Aug, 2023 - 2:30" />
+          <DateChip data={dateConvertor(data.created_at, 'd MMM, YYYY - h:mm')} />
           <TimeChip data="02:23:12" />
         </div>
       </div>
@@ -38,13 +43,28 @@ function ToDo() {
         />
         <KPopover anchorEl={anchorEl} setAnchorEl={setAnchorEl}>
           <div className="px-4 py-3 flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+            <div
+              role="presentation"
+              className="flex items-center gap-2"
+              onClick={() => setAnchorEl(null)}
+            >
+              <CopyLinearIcon className="w-3 h-3 text-grayscale-text-subtitle" />
               <p className="text-medium12 text-grayscale-text-subtitle">{duplicate}</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div
+              role="presentation"
+              className="flex items-center gap-2"
+              onClick={() => setAnchorEl(null)}
+            >
+              <TickCircleLinearIcon className="w-3 h-3 text-grayscale-text-subtitle" />
               <p className="text-medium12 text-grayscale-text-subtitle">{mark_done}</p>
             </div>
-            <div className="flex items-center gap-2">
+            <div
+              role="presentation"
+              className="flex items-center gap-2"
+              onClick={() => setAnchorEl(null)}
+            >
+              <TrashLinearIcon className="w-3 h-3 text-grayscale-text-subtitle" />
               <p className="text-medium12 text-grayscale-text-subtitle">{remove}</p>
             </div>
           </div>

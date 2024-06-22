@@ -5,18 +5,18 @@ import {
   SearchNormalLinearIcon,
   TimerLinearIcon,
 } from '@assets'
-import { JobStatusType } from '@constants/apis/jobUser'
-import { useUserStore } from '@store'
-import { JOB_MANAGER_BASE_URL } from '@utils/api/const'
-import useApi from '@utils/api/useApi'
+// import { JobStatusType } from '@constants/apis/job'
+// import { useUserStore } from '@store'
+// import { JOB_MANAGER_BASE_URL } from '@utils/api/const'
+// import useApi from '@utils/api/useApi'
 
 function Header() {
-  const { jobProfile } = useUserStore()
+  // const { jobProfile } = useUserStore()
 
-  useApi({
-    baseURL: JOB_MANAGER_BASE_URL,
-    url: `/aj/${jobProfile?.id}/by/${JobStatusType.DOING}`,
-  })
+  // useApi({
+  //   baseURL: JOB_MANAGER_BASE_URL,
+  //   url: `/aj/${jobProfile?.id}/by/${JobStatusType.DOING}`,
+  // })
 
   return (
     <div className="h-[61px] flex justify-between items-center bg-grayscale-surface-subtle mr-6 pl-8 pr-6 rounded-[20px]">

@@ -18,6 +18,9 @@ export { default as MoreLinearIcon } from './icons/linear/more.svg'
 export { default as AddLinearIcon } from './icons/linear/add.svg'
 export { default as ClockLinearIcon } from './icons/linear/clock.svg'
 export { default as CloseLinearIcon } from './icons/linear/close.svg'
+export { default as CopyLinearIcon } from './icons/linear/copy.svg'
+export { default as TickCircleLinearIcon } from './icons/linear/tickCircle.svg'
+export { default as TrashLinearIcon } from './icons/linear/trash.svg'
 
 // Bold icons
 export { default as CategoryBoldIcon } from './icons/bold/category.svg'
