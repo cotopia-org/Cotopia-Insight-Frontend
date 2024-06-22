@@ -5,16 +5,17 @@ import {
   SearchNormalLinearIcon,
   TimerLinearIcon,
 } from '@assets'
+import { JobStatusType } from '@constants/apis/jobUser'
 import { useUserStore } from '@store'
 import { JOB_MANAGER_BASE_URL } from '@utils/api/const'
 import useApi from '@utils/api/useApi'
 
 function Header() {
-  const { profile } = useUserStore()
+  const { jobProfile } = useUserStore()
 
   useApi({
     baseURL: JOB_MANAGER_BASE_URL,
-    url: `/aj/${profile?.id}/by/todo`,
+    url: `/aj/${jobProfile?.id}/by/${JobStatusType.DOING}`,
   })
 
   return (

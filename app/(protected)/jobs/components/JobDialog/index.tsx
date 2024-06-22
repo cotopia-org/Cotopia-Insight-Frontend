@@ -9,23 +9,40 @@ import {
   ProfileAddBoldIcon,
   TagBoldIcon,
 } from '@assets'
+import staticText from '@locale/en'
 import JobDialogProps from './type'
 
+const {
+  my_jobs,
+  new_job,
+  start_job,
+  title,
+  description,
+  status,
+  to_do,
+  due_date,
+  click_to_add,
+  tags,
+  add_tags,
+  invited_people,
+  invite_people,
+} = staticText.jobs
+
 function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
+  const [jobTitle, setJobTitle] = useState('')
+  const [jobDescription, setJobDescription] = useState('')
 
   return (
     <KDialog open={jobDialogOpen} handleClose={() => setJobDialogOpen(false)}>
       <div className="flex justify-between items-center px-6 py-4 border-b border-grayscale-border">
         <div className="flex items-center gap-3">
-          <div className="text-bold20 text-grayscale-text-subtitle">My Job</div>
+          <div className="text-bold20 text-grayscale-text-subtitle">{my_jobs}</div>
           <div className="text-bold20 text-grayscale-text-subtitle">/</div>
-          <div className="text-bold20 text-grayscale-text-subtitle">New Job</div>
+          <div className="text-bold20 text-grayscale-text-subtitle">{new_job}</div>
         </div>
         <div className="flex items-center gap-3">
           <KButton
-            text="Start the Job"
+            text={start_job}
             rightIcon={className => <PlayCircleBoldIcon className={className} />}
             onClick={() => setJobDialogOpen(false)}
           />
@@ -41,44 +58,44 @@ function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
           <KInput
             fullWidth
             className="mb-5"
-            label="Title"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
+            label={title}
+            value={jobTitle}
+            onChange={e => setJobTitle(e.target.value)}
           />
           <KInput
             fullWidth
-            label="Description"
-            value={description}
-            onChange={e => setDescription(e.target.value)}
+            label={description}
+            value={jobDescription}
+            onChange={e => setJobDescription(e.target.value)}
             rows={7}
           />
         </div>
         <div className="w-2/5 px-5 py-6">
           <div className="border-b border-grayscale-border-disabled pb-5">
-            <p className="text-medium16 text-grayscale-text-subtitle mb-2">Status</p>
+            <p className="text-medium16 text-grayscale-text-subtitle mb-2">{status}</p>
             <div className="w-max bg-primary-surface-dark rounded-lg px-3 py-1 text-medium16 text-grayscale-text-negative">
-              To Do
+              {to_do}
             </div>
           </div>
           <div className="flex justify-between items-center border-b border-grayscale-border-disabled py-5">
-            <p className="text-medium16 text-grayscale-text-subtitle mb-2">Due Date</p>
+            <p className="text-medium16 text-grayscale-text-subtitle mb-2">{due_date}</p>
             <div className="flex items-center gap-2 w-max bg-grayscale-surface rounded-lg px-3 py-1 text-medium16 text-grayscale-text-paragraph">
               <CalendarLinearIcon className="w-5 h-5 text-grayscale-text-paragraph" />
-              Click to add
+              {click_to_add}
             </div>
           </div>
           <div className="flex justify-between items-center border-b border-grayscale-border-disabled py-5">
-            <p className="text-medium16 text-grayscale-text-subtitle mb-2">Tags</p>
+            <p className="text-medium16 text-grayscale-text-subtitle mb-2">{tags}</p>
             <div className="flex items-center gap-2 w-max px-3 py-1 text-bold16 text-primary-text-link">
               <TagBoldIcon className="w-5 h-5 text-primary-text-link" />
-              Add Tags
+              {add_tags}
             </div>
           </div>
           <div className="flex justify-between items-center py-5">
-            <p className="text-medium16 text-grayscale-text-subtitle mb-2">Invited People</p>
+            <p className="text-medium16 text-grayscale-text-subtitle mb-2">{invited_people}</p>
             <div className="flex items-center gap-2 w-max px-3 py-1 text-bold16 text-primary-text-link">
               <ProfileAddBoldIcon className="w-5 h-5 text-primary-text-link" />
-              Invite people
+              {invite_people}
             </div>
           </div>
         </div>
