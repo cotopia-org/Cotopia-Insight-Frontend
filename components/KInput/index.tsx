@@ -36,9 +36,11 @@ const KInput = forwardRef<HTMLInputElement, KInputProps>(
     return (
       <ThemeProvider>
         <div className={className}>
-          <InputLabel className="!text-medium16 !text-grayscale-text-subtitle mb-2">
-            {label}
-          </InputLabel>
+          {label ? (
+            <InputLabel className="!text-medium16 !text-grayscale-text-subtitle mb-2">
+              {label}
+            </InputLabel>
+          ) : null}
           <TextField
             multiline={!!rows}
             rows={rows}

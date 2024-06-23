@@ -1,7 +1,7 @@
 'use client'
 
 import { MouseEventHandler, useState } from 'react'
-import { KButton, KDialog, KInput, KPopover, KRadio } from '@components'
+import { KButton, KDatePicker, KDialog, KInput, KPopover, KRadio } from '@components'
 import {
   CalendarLinearIcon,
   CloseLinearIcon,
@@ -10,6 +10,8 @@ import {
   TagBoldIcon,
 } from '@assets'
 import staticText from '@locale/en'
+import { JobStatusType } from '@constants/apis/job'
+import { SingleDateType } from '@components/KDatePicker/type'
 import JobDialogProps from './type'
 
 const {
@@ -33,10 +35,46 @@ const {
 function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
   const [jobTitle, setJobTitle] = useState('')
   const [jobDescription, setJobDescription] = useState('')
+  const [jobStatus, setJobStatus] = useState(JobStatusType.TODO)
+  const [startDate, setStartDate] = useState<SingleDateType>(null)
+  const [currentTag, setCurrentTag] = useState<string>()
+  const [tagsList, setTagsList] = useState<string[]>([])
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
+  const [anchorEl2, setAnchorEl2] = useState<Element | null>(null)
 
-  const handleActionClick: MouseEventHandler<HTMLDivElement> = e => {
+  const handleStatusClick: MouseEventHandler<HTMLDivElement> = e => {
     setAnchorEl(e.currentTarget)
+  }
+
+  const handleTagClick: MouseEventHandler<HTMLDivElement> = e => {
+    setAnchorEl2(e.currentTarget)
+  }
+
+  const jobStatusToText = () => {
+    switch (jobStatus) {
+      case JobStatusType.TODO:
+        return to_do
+
+      case JobStatusType.DOING:
+        return in_progress
+
+      case JobStatusType.DONE:
+        return done
+
+      default:
+        return ''
+    }
+  }
+
+  const handleAddTag = (tag: string) => {
+    if (tagsList.filter(item => item === tag)?.length === 0) {
+      setTagsList([...tagsList, tag])
+    }
+    setCurrentTag('')
+  }
+
+  const handleRemoveTag = (tag: string) => {
+    setTagsList([...tagsList.filter(item => item !== tag)])
   }
 
   return (
@@ -84,34 +122,103 @@ function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
             <div
               role="presentation"
               className="w-max bg-primary-surface-dark rounded-lg px-3 py-1 text-medium16 text-grayscale-text-negative cursor-pointer"
-              onClick={handleActionClick}
+              onClick={handleStatusClick}
             >
-              {to_do}
+              {jobStatusToText()}
             </div>
             <KPopover anchorEl={anchorEl} setAnchorEl={setAnchorEl}>
               <div className="px-4 py-3 flex flex-col gap-4">
-                <KRadio label={to_do} checked />
-                <KRadio label={in_progress} />
-                <KRadio label={done} />
+                <KRadio
+                  label={to_do}
+                  checked={jobStatus === JobStatusType.TODO}
+                  onClick={() => setJobStatus(JobStatusType.TODO)}
+                />
+                <KRadio
+                  label={in_progress}
+                  checked={jobStatus === JobStatusType.DOING}
+                  onClick={() => setJobStatus(JobStatusType.DOING)}
+                />
+                <KRadio
+                  label={done}
+                  checked={jobStatus === JobStatusType.DONE}
+                  onClick={() => setJobStatus(JobStatusType.DONE)}
+                />
               </div>
             </KPopover>
           </div>
-          <div className="flex justify-between items-center border-b border-grayscale-border-disabled py-5">
+          <div className="border-b border-grayscale-border-disabled py-5">
             <p className="text-medium16 text-grayscale-text-subtitle mb-2">{due_date}</p>
-            <div className="flex items-center gap-2 w-max bg-grayscale-surface rounded-lg px-3 py-1 text-medium16 text-grayscale-text-paragraph">
+            <KDatePicker
+              type="datePicker"
+              value={startDate}
+              onChange={setStartDate}
+              renderComponent={
+                <KInput
+                  placeholder={click_to_add}
+                  leftIcon={className => <CalendarLinearIcon className={className} />}
+                />
+              }
+            />
+            {/* <div
+              role="presentation"
+              className="flex items-center gap-2 w-max bg-grayscale-surface rounded-lg px-3 py-1 text-medium16 text-grayscale-text-paragraph cursor-pointer"
+            >
               <CalendarLinearIcon className="w-5 h-5 text-grayscale-text-paragraph" />
               {click_to_add}
-            </div>
+            </div> */}
           </div>
-          <div className="flex justify-between items-center border-b border-grayscale-border-disabled py-5">
-            <p className="text-medium16 text-grayscale-text-subtitle mb-2">{tags}</p>
-            <div className="flex items-center gap-2 w-max px-3 py-1 text-bold16 text-primary-text-link">
-              <TagBoldIcon className="w-5 h-5 text-primary-text-link" />
-              {add_tags}
+          <div className="border-b border-grayscale-border-disabled py-5">
+            <div className="flex justify-between items-center">
+              <p className="text-medium16 text-grayscale-text-subtitle">{tags}</p>
+              <div
+                role="presentation"
+                className="flex items-center gap-2 w-max px-3 py-1 text-bold16 text-primary-text-link"
+                onClick={handleTagClick}
+              >
+                <TagBoldIcon className="w-5 h-5 text-primary-text-link" />
+                {add_tags}
+              </div>
             </div>
+            <div className="flex gap-2 flex-wrap mt-1">
+              {tagsList.map(item => (
+                <div className="flex items-center gap-1 bg-grayscale-surface p-1 rounded-[5px]">
+                  <p className="text-medium16 text-grayscale-text-paragraph">{item}</p>
+                  <CloseLinearIcon
+                    className="w-4 h-4 text-error-text-link cursor-pointer"
+                    onClick={() => handleRemoveTag(item)}
+                  />
+                </div>
+              ))}
+            </div>
+            <KPopover anchorEl={anchorEl2} setAnchorEl={setAnchorEl2}>
+              <div className="w-[318px] px-4 py-3 flex flex-col gap-2">
+                <KInput
+                  width={300}
+                  label={tags}
+                  placeholder="Search or Create Tags..."
+                  value={currentTag}
+                  onChange={e => setCurrentTag(e.target.value)}
+                  onPressEnter={() => {
+                    if (currentTag && currentTag.length !== 0) handleAddTag(currentTag)
+                  }}
+                  leftIcon={className => <TagBoldIcon className={className} />}
+                />
+                <div className="flex gap-1 flex-wrap">
+                  {tagsList.map(item => (
+                    <div className="flex items-center gap-1 bg-grayscale-surface p-1 rounded-[5px]">
+                      <p className="text-medium12 text-grayscale-text-paragraph">{item}</p>
+                      <CloseLinearIcon
+                        className="w-2.5 h-2.5 text-error-text-link cursor-pointer"
+                        onClick={() => handleRemoveTag(item)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </KPopover>
           </div>
           <div className="flex justify-between items-center py-5">
-            <p className="text-medium16 text-grayscale-text-subtitle mb-2">{invited_people}</p>
+            <p className="text-medium16 text-grayscale-text-subtitle">{invited_people}</p>
             <div className="flex items-center gap-2 w-max px-3 py-1 text-bold16 text-primary-text-link">
               <ProfileAddBoldIcon className="w-5 h-5 text-primary-text-link" />
               {invite_people}

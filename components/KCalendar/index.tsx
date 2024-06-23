@@ -31,24 +31,26 @@ function KCalendar({ data }: KCalendarProps) {
   }
 
   return (
-    <Calendar
-      weekStartDayIndex={1}
-      highlightToday={false}
-      mapDays={e => {
-        return {
-          style: {
-            backgroundColor: getBackgroundColor(
-              data.find(item => item.date === e.date.format('YYYY-MM-DD'))?.value || 0,
-              Math.max(...data.map(item => item.value)),
-            ),
-            color: getColor(
-              data.find(item => item.date === e.date.format('YYYY-MM-DD'))?.value || 0,
-              Math.max(...data.map(item => item.value)),
-            ),
-          },
-        }
-      }}
-    />
+    <div className="w-full" id="calendar">
+      <Calendar
+        weekStartDayIndex={1}
+        highlightToday={false}
+        mapDays={e => {
+          return {
+            style: {
+              backgroundColor: getBackgroundColor(
+                data.find(item => item.date === e.date.format('YYYY-MM-DD'))?.value || 0,
+                Math.max(...data.map(item => item.value)),
+              ),
+              color: getColor(
+                data.find(item => item.date === e.date.format('YYYY-MM-DD'))?.value || 0,
+                Math.max(...data.map(item => item.value)),
+              ),
+            },
+          }
+        }}
+      />
+    </div>
   )
 }
 

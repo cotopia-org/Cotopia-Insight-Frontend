@@ -2,9 +2,6 @@
 
 import DatePicker from 'react-multi-date-picker'
 import DateObject from 'react-date-object'
-import persian_fa from 'react-date-object/locales/persian_fa'
-import persian from 'react-date-object/calendars/persian'
-import highlightWeekends from 'react-multi-date-picker/plugins/highlight_weekends'
 import KDatePickerProps from './type'
 import './style.css'
 
@@ -42,23 +39,22 @@ function KDatePicker({
     return onChange(null)
   }
   return (
-    <DatePicker
-      render={renderComponent}
-      arrow={false}
-      locale={persian_fa}
-      calendar={persian}
-      value={value}
-      onChange={handleChange}
-      onOpenPickNewDate={false}
-      editable={false}
-      numberOfMonths={numberOfMonth}
-      multiple={type === 'multiDatePicker'}
-      rangeHover={type === 'rangePicker'}
-      plugins={[highlightWeekends()]}
-      maxDate={maxDate}
-      minDate={minDate}
-      range={type === 'rangePicker'}
-    />
+    <div id="datePicker">
+      <DatePicker
+        render={renderComponent}
+        arrow={false}
+        value={value}
+        onChange={handleChange}
+        onOpenPickNewDate={false}
+        editable={false}
+        numberOfMonths={numberOfMonth}
+        multiple={type === 'multiDatePicker'}
+        rangeHover={type === 'rangePicker'}
+        maxDate={maxDate}
+        minDate={minDate}
+        range={type === 'rangePicker'}
+      />
+    </div>
   )
 }
 

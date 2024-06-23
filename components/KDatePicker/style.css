@@ -1,46 +1,46 @@
-.rmdp-calendar {
+#datePicker .rmdp-calendar {
   padding: 12px !important;
 }
 
-.rmdp-day span {
+#datePicker .rmdp-day span {
   border-radius: 8px !important;
   box-shadow: none !important;
 }
 
-.rmdp-day span:hover {
+#datePicker .rmdp-day span:hover {
   background-color: #eef0fa !important;
   color: #11131f !important;
 }
 
-.rmdp-day.rmdp-today span {
+#datePicker .rmdp-day.rmdp-today span {
   background-color: #d2fce3 !important;
   color: #11131f !important;
 }
 
-.rmdp-day.rmdp-selected span,
-.rmdp-day.rmdp-selected span:hover {
+#datePicker .rmdp-day.rmdp-selected span,
+#datePicker .rmdp-day.rmdp-selected span:hover {
   background-color: #0087e0 !important;
   color: #fff !important;
 }
 
-.rmdp-day-hidden span,
-.rmdp-day-hidden span:hover {
+#datePicker .rmdp-day-hidden span,
+#datePicker .rmdp-day-hidden span:hover {
   background-color: unset !important;
   color: transparent !important;
 }
 
-.rmdp-disabled span,
-.rmdp-disabled span:hover {
+#datePicker .rmdp-disabled span,
+#datePicker .rmdp-disabled span:hover {
   background-color: unset !important;
   color: #b6b8bf !important;
 }
 
-.rmdp-day .highlight,
-.rmdp-day .highlight:hover {
+#datePicker .rmdp-day .highlight,
+#datePicker .rmdp-day .highlight:hover {
   color: #ff334b !important;
 }
 
-.rmdp-arrow-container {
+#datePicker .rmdp-arrow-container {
   align-items: center !important;
   flex-wrap: wrap !important;
   box-shadow: none !important;
@@ -49,35 +49,35 @@
   height: 24px !important;
 }
 
-.rmdp-arrow-container:hover {
+#datePicker .rmdp-arrow-container:hover {
   background-color: #eef0fa !important;
 }
 
-.rmdp-arrow-container .rmdp-arrow,
-.rmdp-arrow-container:hover .rmdp-arrow {
+#datePicker .rmdp-arrow-container .rmdp-arrow,
+#datePicker .rmdp-arrow-container:hover .rmdp-arrow {
   border-color: #11131f !important;
   margin: 0 !important;
   width: 8px !important;
   height: 8px !important;
 }
 
-.rmdp-arrow-container.rmdp-left .rmdp-arrow {
+#datePicker .rmdp-arrow-container.rmdp-left .rmdp-arrow {
   margin-right: 3px !important;
 }
 
-.rmdp-arrow-container.rmdp-right .rmdp-arrow {
+#datePicker .rmdp-arrow-container.rmdp-right .rmdp-arrow {
   margin-left: 3px !important;
 }
 
-.rmdp-arrow-container.disabled:hover {
+#datePicker .rmdp-arrow-container.disabled:hover {
   background-color: transparent !important;
 }
 
-.rmdp-arrow-container.disabled .rmdp-arrow,
-.rmdp-arrow-container.disabled:hover .rmdp-arrow {
+#datePicker .rmdp-arrow-container.disabled .rmdp-arrow,
+#datePicker .rmdp-arrow-container.disabled:hover .rmdp-arrow {
   border-color: #b6b8bf !important;
 }
 
-.rmdp-week-day {
+#datePicker .rmdp-week-day {
   color: #6d729c !important;
 }

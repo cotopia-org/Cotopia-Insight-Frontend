@@ -9,9 +9,9 @@ export default interface KInputProps {
   fullWidth?: boolean
   variant?: 'outlined' | 'filled'
   type?: HTMLInputTypeAttribute
-  label: string
+  label?: string
   value?: string
-  onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+  onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
   onPressEnter?: () => void
   rightIcon?: (className: string) => ReactNode
   leftIcon?: (className: string) => ReactNode
