@@ -17,10 +17,11 @@ function Jobs() {
   const [jobDialogOpen, setJobDialogOpen] = useState(false)
   const { jobProfile } = useUserStore()
 
-  const { data: inProgressJobs, loading: inProgressLoading } = useApi<
-    JobsDto,
-    JobDetailType | null
-  >({
+  const {
+    data: inProgressJobs,
+    loading: inProgressLoading,
+    fetch: fetchDoing,
+  } = useApi<JobsDto, JobDetailType | null>({
     baseURL: JOB_MANAGER_BASE_URL,
     url: `/aj/${jobProfile?.id}/by/${JobStatusType.DOING}`,
     callCondition: !!jobProfile?.id,
@@ -38,15 +39,22 @@ function Jobs() {
     baseURL: JOB_MANAGER_BASE_URL,
     url: `/aj/${jobProfile?.id}/by/${JobStatusType.TODO}`,
     callCondition: !!jobProfile?.id,
+    dataFormatter(res) {
+      return res.filter(item => !item.job.is_archived)
+    },
   })
 
-  const { data: doneJobs, loading: doneLoading } = useApi<JobsDto, JobDetailType | null>({
+  const {
+    data: doneJobs,
+    loading: doneLoading,
+    fetch: fetchDone,
+  } = useApi<JobsDto, JobDetailType | null>({
     baseURL: JOB_MANAGER_BASE_URL,
     url: `/aj/${jobProfile?.id}/by/${JobStatusType.DONE}`,
     callCondition: !!jobProfile?.id,
     dataFormatter(res) {
       if (res.length === 0) return null
-      return res[0].job
+      return res[res.length - 1].job
     },
   })
 
@@ -72,7 +80,17 @@ function Jobs() {
           {inProgressLoading || inProgressJobs === undefined ? (
             <KSkeleton height={99} />
           ) : (
-            <InProgress data={inProgressJobs} />
+            <InProgress
+              data={inProgressJobs}
+              onPauseJob={() => {
+                fetchTodo()
+                fetchDoing()
+              }}
+              onCompleteJob={() => {
+                fetchDoing()
+                fetchDone()
+              }}
+            />
           )}
         </div>
         <div className="relative flex-1 overflow-scroll">
@@ -96,7 +114,18 @@ function Jobs() {
                       index !== todoJobs.length - 1,
                   })}
                 >
-                  <ToDo data={item.job} />
+                  <ToDo
+                    data={item.job}
+                    onRemoveJob={fetchTodo}
+                    onCompleteJob={() => {
+                      fetchTodo()
+                      fetchDone()
+                    }}
+                    onPlayJob={() => {
+                      fetchTodo()
+                      fetchDoing()
+                    }}
+                  />
                 </div>
               ))}
             </>
@@ -107,14 +136,20 @@ function Jobs() {
           {doneLoading || doneJobs === undefined ? (
             <KSkeleton height={74} />
           ) : (
-            <Done data={doneJobs} />
+            <Done
+              data={doneJobs}
+              onRestoreJob={() => {
+                fetchTodo()
+                fetchDone()
+              }}
+            />
           )}
         </div>
       </div>
       <JobDialog
         jobDialogOpen={jobDialogOpen}
         setJobDialogOpen={setJobDialogOpen}
-        onCreateJob={() => fetchTodo()}
+        onCreateJob={fetchTodo}
       />
     </div>
   )
