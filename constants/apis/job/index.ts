@@ -9,14 +9,16 @@ export const enum JobStatusType {
 export const JOB_DOING_URL = (id: number) => `/aj/${id}/by/${JobStatusType.DOING}`
 export const JOB_TODO_URL = (id: number) => `/aj/${id}/by/${JobStatusType.TODO}`
 export const JOB_DONE_URL = (id: number) => `/aj/${id}/by/${JobStatusType.DONE}`
+export const CREATE_JOB = '/jobs'
+export const ACCEPT_JOB = (jobId: number) => `/jobs/accept/${jobId}`
 
 export interface JobDetailType {
   title: string
   workspace: string
   description: string
-  tags: null
+  tags: string[] | null
   weights: null
-  deadline: null
+  deadline: string | null
   status: JobStatusType
   is_archived: boolean
   id: number

@@ -1,12 +1,12 @@
-import { Radio } from '@mui/material'
+import { FormLabel, Radio } from '@mui/material'
 import classNames from 'classnames'
 import ThemeProvider from '../ThemeProvider'
 import { KRadioProps } from './type'
 
 function KRadio({ className, label, checked, onClick, disabled }: KRadioProps) {
   return (
-    <div className={classNames('flex items-center', className)}>
-      <ThemeProvider>
+    <ThemeProvider>
+      <FormLabel className={classNames('flex items-center', className)}>
         <Radio
           checked={checked}
           onChange={e => (onClick ? onClick(e.target.checked) : null)}
@@ -46,8 +46,8 @@ function KRadio({ className, label, checked, onClick, disabled }: KRadioProps) {
           }
         />
         {label && <div className="text-grayscale-text-paragraph text-medium14 ml-2">{label}</div>}
-      </ThemeProvider>
-    </div>
+      </FormLabel>
+    </ThemeProvider>
   )
 }
 

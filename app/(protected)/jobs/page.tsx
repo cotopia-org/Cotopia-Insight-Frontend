@@ -13,8 +13,6 @@ import { Done, InProgress, JobDialog, ToDo } from './components'
 
 const { my_jobs, in_progress, to_do, done } = staticText.jobs
 
-const temp = [1, 2, 3, 4, 5, 6, 7, 8]
-
 function Jobs() {
   const [jobDialogOpen, setJobDialogOpen] = useState(false)
   const { jobProfile } = useUserStore()
@@ -32,7 +30,11 @@ function Jobs() {
     },
   })
 
-  const { data: todoJobs, loading: todoLoading } = useApi<JobsDto>({
+  const {
+    data: todoJobs,
+    loading: todoLoading,
+    fetch: fetchTodo,
+  } = useApi<JobsDto>({
     baseURL: JOB_MANAGER_BASE_URL,
     url: `/aj/${jobProfile?.id}/by/${JobStatusType.TODO}`,
     callCondition: !!jobProfile?.id,
@@ -91,7 +93,7 @@ function Jobs() {
                 <div
                   className={classNames({
                     'pb-2 mb-2 border-b border-grayscale-border-disabled':
-                      index !== temp.length - 1,
+                      index !== todoJobs.length - 1,
                   })}
                 >
                   <ToDo data={item.job} />
@@ -109,7 +111,11 @@ function Jobs() {
           )}
         </div>
       </div>
-      <JobDialog jobDialogOpen={jobDialogOpen} setJobDialogOpen={setJobDialogOpen} />
+      <JobDialog
+        jobDialogOpen={jobDialogOpen}
+        setJobDialogOpen={setJobDialogOpen}
+        onCreateJob={() => fetchTodo()}
+      />
     </div>
   )
 }

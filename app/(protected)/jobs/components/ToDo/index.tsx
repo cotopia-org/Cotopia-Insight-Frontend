@@ -12,7 +12,7 @@ import { KPopover } from '@components'
 import staticText from '@locale/en'
 import { dateConvertor } from '@utils'
 import DateChip from '../DateChip'
-import TimeChip from '../TimeChip'
+// import TimeChip from '../TimeChip'
 import TodoProps from './type'
 
 const { duplicate, mark_done, remove } = staticText.jobs
@@ -31,9 +31,8 @@ function ToDo({ data }: TodoProps) {
         <p className="text-medium18 text-grayscale-text-paragraphs mb-1">{data.title}</p>
         <p className="text-medium14 text-grayscale-text-caption mb-2">{data.description}</p>
         <div className="flex gap-3">
-          <DateChip data="2 Aug, 2023 - 2:30" />
-          <DateChip data={dateConvertor(data.created_at, 'd MMM, YYYY - h:mm')} />
-          <TimeChip data="02:23:12" />
+          {data.deadline ? <DateChip data={dateConvertor(data.deadline, 'D MMM, YYYY')} /> : null}
+          {/* <TimeChip data="02:23:12" /> */}
         </div>
       </div>
       <div className="flex flex-col justify-between items-end">
@@ -69,11 +68,9 @@ function ToDo({ data }: TodoProps) {
             </div>
           </div>
         </KPopover>
-        <div className="flex items-center gap-2">
-          <div className="text-medium12 text-grayscale-text-subtitle">Personal</div>
-          <div className="text-medium12 text-grayscale-text-subtitle">/</div>
-          <div className="text-medium12 text-grayscale-text-subtitle"># Cotopia, Personal</div>
-        </div>
+        {data.tags ? (
+          <div className="text-medium12 text-grayscale-text-subtitle"># {data.tags.join(', ')}</div>
+        ) : null}
       </div>
     </div>
   )

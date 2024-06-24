@@ -1,6 +1,6 @@
 import { PauseCircleBulkIcon, TickCircleBulkIcon } from '@assets'
 import { dateConvertor } from '@utils'
-import TimeChip from '../TimeChip'
+// import TimeChip from '../TimeChip'
 import DateChip from '../DateChip'
 import InProgressProps from './type'
 
@@ -16,14 +16,16 @@ function InProgress({ data }: InProgressProps) {
           <p className="text-medium18 text-grayscale-text-paragraphs mb-1">{data.title}</p>
           <p className="text-medium14 text-grayscale-text-caption mb-2">{data.description}</p>
           <div className="flex gap-3">
-            <DateChip data={dateConvertor(data.created_at, 'd MMM, YYYY - h:mm')} />
-            <TimeChip data="02:23:12" />
+            {data.deadline ? <DateChip data={dateConvertor(data.deadline, 'D MMM, YYYY')} /> : null}
+            {/* <TimeChip data="02:23:12" /> */}
           </div>
         </div>
         <div className="self-end flex items-center gap-2">
-          <div className="text-medium12 text-grayscale-text-subtitle">Personal</div>
-          <div className="text-medium12 text-grayscale-text-subtitle">/</div>
-          <div className="text-medium12 text-grayscale-text-subtitle"># Cotopia, Personal</div>
+          {data.tags ? (
+            <div className="text-medium12 text-grayscale-text-subtitle">
+              # {data.tags.join(', ')}
+            </div>
+          ) : null}
         </div>
       </div>
     )

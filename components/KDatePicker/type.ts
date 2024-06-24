@@ -1,13 +1,22 @@
-import React from 'react'
-import DateObject from 'react-date-object'
+import React, { MutableRefObject } from 'react'
+import DateObject, { Locale } from 'react-date-object'
 
 export type SingleDateType = number | null
 export type MultiDateType = number[] | null
 export type RangePickerType = number[] | null
 
 export interface DatePickerDefaultProps {
+  ref?: MutableRefObject<any> | undefined
   numberOfMonth?: number
-  renderComponent: React.JSX.Element
+  renderComponent:
+    | React.JSX.Element
+    | ((
+        value: string,
+        openCalendar: () => void,
+        handleValueChange: (e: React.ChangeEvent) => void,
+        locale: Locale,
+        separator: string,
+      ) => React.ReactNode)
   maxDate?: Date | string | number | DateObject
   minDate?: Date | string | number | DateObject
 }

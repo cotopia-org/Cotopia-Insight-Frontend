@@ -1,6 +1,6 @@
 'use client'
 
-import { MouseEventHandler, useState } from 'react'
+import { MouseEventHandler, useRef, useState } from 'react'
 import { KButton, KDatePicker, KDialog, KInput, KPopover, KRadio } from '@components'
 import {
   CalendarLinearIcon,
@@ -10,8 +10,12 @@ import {
   TagBoldIcon,
 } from '@assets'
 import staticText from '@locale/en'
-import { JobStatusType } from '@constants/apis/job'
+import { ACCEPT_JOB, CREATE_JOB, JobDetailType, JobStatusType } from '@constants/apis/job'
 import { SingleDateType } from '@components/KDatePicker/type'
+import { dateConvertor } from '@utils'
+import useApi from '@utils/api/useApi'
+import { JOB_MANAGER_BASE_URL } from '@utils/api/const'
+import { useUserStore } from '@store'
 import JobDialogProps from './type'
 
 const {
@@ -32,15 +36,53 @@ const {
   invite_people,
 } = staticText.jobs
 
-function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
+function JobDialog({ jobDialogOpen, setJobDialogOpen, onCreateJob }: JobDialogProps) {
+  const datePickerRef = useRef()
+  const { profile } = useUserStore()
   const [jobTitle, setJobTitle] = useState('')
   const [jobDescription, setJobDescription] = useState('')
   const [jobStatus, setJobStatus] = useState(JobStatusType.TODO)
-  const [startDate, setStartDate] = useState<SingleDateType>(null)
+  const [dueDate, setDueDate] = useState<SingleDateType>(null)
   const [currentTag, setCurrentTag] = useState<string>()
   const [tagsList, setTagsList] = useState<string[]>([])
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [anchorEl2, setAnchorEl2] = useState<Element | null>(null)
+
+  const { fetch: fetchAcceptJob } = useApi({
+    baseURL: JOB_MANAGER_BASE_URL,
+    method: 'post',
+    lazy: true,
+    onSuccess() {
+      setJobDialogOpen(false)
+      setJobTitle('')
+      setJobDescription('')
+      setJobStatus(JobStatusType.TODO)
+      setDueDate(null)
+      setCurrentTag('')
+      setTagsList([])
+      onCreateJob()
+    },
+  })
+
+  const { fetch: fetchCreateJob, loading: loadingCreateJob } = useApi<JobDetailType>({
+    baseURL: JOB_MANAGER_BASE_URL,
+    url: CREATE_JOB,
+    method: 'post',
+    lazy: true,
+    payload: {
+      title: jobTitle,
+      workspace: profile?.discord_guild,
+      description: jobDescription,
+      tags: tagsList,
+      weights: {},
+      deadline: dateConvertor(dueDate || '', 'YYYY-MM-DDThh:mm:ss'),
+    },
+    onSuccess(data) {
+      fetchAcceptJob({
+        url: ACCEPT_JOB(data.id),
+      })
+    },
+  })
 
   const handleStatusClick: MouseEventHandler<HTMLDivElement> = e => {
     setAnchorEl(e.currentTarget)
@@ -77,6 +119,10 @@ function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
     setTagsList([...tagsList.filter(item => item !== tag)])
   }
 
+  const handleAddJob = () => {
+    fetchCreateJob()
+  }
+
   return (
     <KDialog open={jobDialogOpen} handleClose={() => setJobDialogOpen(false)}>
       <div className="flex justify-between items-center px-6 py-4 border-b border-grayscale-border">
@@ -87,10 +133,12 @@ function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
         </div>
         <div className="flex items-center gap-3">
           <KButton
+            width={124}
             text={start_job}
             rightIcon={className => <PlayCircleBoldIcon className={className} />}
             disabled={!jobTitle || !jobDescription}
-            onClick={() => setJobDialogOpen(false)}
+            onClick={handleAddJob}
+            loading={loadingCreateJob}
           />
           <CloseLinearIcon
             className="w-5 h-5 text-grayscale-text-subtitle cursor-pointer"
@@ -131,17 +179,26 @@ function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
                 <KRadio
                   label={to_do}
                   checked={jobStatus === JobStatusType.TODO}
-                  onClick={() => setJobStatus(JobStatusType.TODO)}
+                  onClick={() => {
+                    setJobStatus(JobStatusType.TODO)
+                    setAnchorEl(null)
+                  }}
                 />
                 <KRadio
                   label={in_progress}
                   checked={jobStatus === JobStatusType.DOING}
-                  onClick={() => setJobStatus(JobStatusType.DOING)}
+                  onClick={() => {
+                    setJobStatus(JobStatusType.DOING)
+                    setAnchorEl(null)
+                  }}
                 />
                 <KRadio
                   label={done}
                   checked={jobStatus === JobStatusType.DONE}
-                  onClick={() => setJobStatus(JobStatusType.DONE)}
+                  onClick={() => {
+                    setJobStatus(JobStatusType.DONE)
+                    setAnchorEl(null)
+                  }}
                 />
               </div>
             </KPopover>
@@ -149,23 +206,21 @@ function JobDialog({ jobDialogOpen, setJobDialogOpen }: JobDialogProps) {
           <div className="border-b border-grayscale-border-disabled py-5">
             <p className="text-medium16 text-grayscale-text-subtitle mb-2">{due_date}</p>
             <KDatePicker
+              ref={datePickerRef}
               type="datePicker"
-              value={startDate}
-              onChange={setStartDate}
-              renderComponent={
-                <KInput
-                  placeholder={click_to_add}
-                  leftIcon={className => <CalendarLinearIcon className={className} />}
-                />
-              }
+              value={dueDate}
+              onChange={setDueDate}
+              renderComponent={(value, openCalendar) => (
+                <div
+                  role="presentation"
+                  className="flex items-center gap-2 w-max bg-grayscale-surface rounded-lg px-3 py-1 text-medium16 text-grayscale-text-paragraph cursor-pointer"
+                  onClick={openCalendar}
+                >
+                  <CalendarLinearIcon className="w-5 h-5 text-grayscale-text-paragraph" />
+                  {value ? dateConvertor(value, 'D MMM, YYYY') : click_to_add}
+                </div>
+              )}
             />
-            {/* <div
-              role="presentation"
-              className="flex items-center gap-2 w-max bg-grayscale-surface rounded-lg px-3 py-1 text-medium16 text-grayscale-text-paragraph cursor-pointer"
-            >
-              <CalendarLinearIcon className="w-5 h-5 text-grayscale-text-paragraph" />
-              {click_to_add}
-            </div> */}
           </div>
           <div className="border-b border-grayscale-border-disabled py-5">
             <div className="flex justify-between items-center">

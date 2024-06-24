@@ -15,12 +15,12 @@ function Done({ data }: DoneProps) {
           <p className="text-medium14 text-grayscale-text-caption mb-2">{data.description}</p>
         </div>
         <div className="flex flex-col justify-between items-end">
-          <DateChip data={dateConvertor(data.created_at, 'd MMM, YYYY - h:mm')} />
-          <div className="flex items-center gap-2">
-            <div className="text-medium12 text-grayscale-text-subtitle">Personal</div>
-            <div className="text-medium12 text-grayscale-text-subtitle">/</div>
-            <div className="text-medium12 text-grayscale-text-subtitle"># Cotopia, Personal</div>
-          </div>
+          {data.deadline ? <DateChip data={dateConvertor(data.deadline, 'D MMM, YYYY')} /> : null}
+          {data.tags ? (
+            <div className="text-medium12 text-grayscale-text-subtitle">
+              # {data.tags.join(', ')}
+            </div>
+          ) : null}
         </div>
       </div>
     )
